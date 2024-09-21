@@ -37,7 +37,7 @@ module.exports = async () => {
                                     _id: new mongoose.Types.ObjectId(),
                                     main: JSON.stringify(r.tasks[i]),
                                 });
-                                dataTugas.save()
+                                dataTugas.save();
                             })
                             .catch(e => console.error(`X | Error: ${e}`));
                         });

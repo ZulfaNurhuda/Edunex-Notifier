@@ -1,4 +1,4 @@
-const fetch = require(`node-fetch`)
+const fetch = require(`node-fetch`);
 
 module.exports = async () => {
     return fetch(`https://raw.githubusercontent.com/well300/quotes-api/refs/heads/main/quotes.json`)
