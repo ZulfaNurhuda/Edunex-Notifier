@@ -1,4 +1,4 @@
-require('dotenv').config({ path: `${process.cwd()}/Secret/.env` });
+require('dotenv');
 const handler = require(`./Utility/handler`);
 
 handler()
