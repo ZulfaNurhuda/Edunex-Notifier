@@ -1,16 +1,23 @@
 require('dotenv').config({ path: `${process.cwd()}/.env`});
+const TelegramBot = require(`node-telegram-bot-api`);
 const handler = require(`./Utility/handler`);
 const database = require(`./Utility/database`);
 
-database().then(() => {
-    handler().then(() => {
-        console.log(`V | System is Ready!`)
-        setInterval(() => {
-            handler().catch(e => console.error(`X | Error: ${e}`));
-        }, 1000 * 60 * 5)
+const client = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
+
+if (client) {
+    database().then(() => {
+        handler(client).then(() => {
+            console.log(`V | System is Ready!`)
+            setInterval(() => {
+                handler(client).catch(e => console.error(`X | Error: ${e}`));
+            }, 1000 * 60 * 5)
+        })
+        .catch(e => console.error(`X | Error: ${e}`));
     })
     .catch(e => console.error(`X | Error: ${e}`));
-})
-.catch(e => console.error(`X | Error: ${e}`));
+}
 
-process.on(`warning`, (e) => console.error(`X | Error: ${e}`));
+// process.on(`warning`, (e) => console.error(`X | Error: ${e}`));
+// process.on(`unhandledRejection`, (e) => console.error(`X | Error: ${e}`))
+// process.on(`uncaughtException`, (e) => console.error(`X | Error: ${e}`))

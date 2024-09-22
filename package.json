@@ -1,4 +1,21 @@
 {
+  "name": "edunex-notifier",
+  "version": "1.0.0",
+  "description": "Edunex Notifier, to Notify Me About Assignment in Edunex (LMS for Bandung Institute of Technology)",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+github.com/ZulfaNurhuda/Edunex-Notifier.git"
+  },
+  "author": "Zulfa Nurhuda",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZulfaNurhuda/Edunex-Notifier/issues"
+  },
+  "homepage": "https://github.com/ZulfaNurhuda/Edunex-Notifier#readme",
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
@@ -6,6 +23,7 @@
     "moment-timezone": "^0.5.45",
     "mongoose": "^8.6.3",
     "node-fetch": "^2.7.0",
+    "node-telegram-bot-api": "^0.66.0",
     "nodemailer": "^6.9.15",
     "ping-monitor": "^0.8.2"
   }

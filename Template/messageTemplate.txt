@@ -1,0 +1,9 @@
+<b>📚 • HAI ZULFA NURHUDA, ADA TUGAS BARU DI EDUNEX!</b>
+
+<b>$nama_dosen</b> memposting tugas baru di <b>$mata_kuliah</b>
+
+Ayo Kerjakan <b>$nama_tugas</b> Sekarang! Deadlinenya <b>$deadline</b> Lhoo! Udah Jadi Mahasiswa ITB Jangan Malesss!
+
+<blockquote>$quotes</blockquote>
+
+<code>(Edunex LMS for ITB)</code>
