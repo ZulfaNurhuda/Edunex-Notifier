@@ -1,6 +1,5 @@
 require('dotenv').config({ path: `${process.cwd()}/.env`});
 const handler = require(`./Utility/handler`);
-const keepAlive = require(`./server`);
 
 handler()
 .then(() => {
@@ -12,5 +11,3 @@ handler()
 .catch(e => console.error(`X | Error: ${e}`));
 
 process.on(`warning`, (e) => console.error(`X | Error: ${e}`));
-
-keepAlive();
