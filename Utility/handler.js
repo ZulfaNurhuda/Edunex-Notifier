@@ -36,7 +36,7 @@ module.exports = async (client) => {
                                 deadline: moment(todo.tasks[i].time).tz('Asia/Jakarta').format('LLLL'), 
                                 tanggal_upload: moment(Date.now()).tz('Asia/Jakarta').format('LLLL'),
                                 quotes: `"${quote[0].quote}" (${quote[0].author})`,
-                                url_edunex: `https://edunex.itb.ac.id/assignment/take/${todo.tasks[i].id}}`,
+                                url_edunex: `https://edunex.itb.ac.id/assignment/take/${todo.tasks[i].id}`,
                             })
                             .then(() => {
                                 sendMessageTelegram(client, {
@@ -46,7 +46,7 @@ module.exports = async (client) => {
                                     deadline: moment(todo.tasks[i].time).tz('Asia/Jakarta').format('LLLL'), 
                                     tanggal_upload: moment(Date.now()).tz('Asia/Jakarta').format('LLLL'),
                                     quotes: `"${quote[0].quote}" (${quote[0].author})`,
-                                    url_edunex: `https://edunex.itb.ac.id/assignment/take/${todo.tasks[i].id}}`,
+                                    url_edunex: `https://edunex.itb.ac.id/assignment/take/${todo.tasks[i].id}`,
                                 }).then(() => {
                                     const dataTugas = new DataTugas({
                                         _id: new mongoose.Types.ObjectId(),
