@@ -1,6 +1,6 @@
 const mongoose = require(`mongoose`);
 
-const dataTugas = mongoose.Schema({
+const dataTugas = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     main: String,
 });

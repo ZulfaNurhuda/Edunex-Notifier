@@ -1,0 +1,119 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edunex Notification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            background-color: #004DFF;
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .logo {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+        }
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+        .content {
+            padding: 20px;
+        }
+        .notification-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .notification-card h3 {
+            margin-top: 5px;
+        }
+        .notification-icon {
+              width: 25px;
+              height: 25px;
+              margin-right: 10px;
+              vertical-align: middle;
+        }
+        .exam-detail {
+	        padding: 7px;
+            margin-top: 30px;
+            margin-bottom: 0px;
+            text-align: center;
+	        background: #757575;
+            color: #FFFFFF;	
+	        position: relative;
+            border-radius: 15px;
+        }
+        .quotes {
+          font-size: 10px;
+          color: #757575;
+        }
+        .button {
+            display: inline-block;
+            background-color: #004DFF;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #757575;
+        }
+        .footer-logo {
+              width: 70px;
+              height: 70px;
+              margin-bottom: 5px;
+          }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <div class="header">
+            <img class="logo" src="https://cdn-edunex.itb.ac.id/icons/edunex/favicon.png" alt="Edunex Logo">
+            <h1>Edunex Notification</h1>
+        </div>
+        <div class="content">
+            <h2>Hai Zulfa Nurhuda,</h2>
+            <p><b>$nama_dosen</b> memposting kuis/ujian baru di <b>$mata_kuliah</b></p>
+            <div class="notification-card">
+              <h3>
+                  <img class="notification-icon" src="https://i.imgur.com/rNGPxce.png" alt="Assignment Logo">
+                  KUIS/UJIAN BARU!
+              </h3>
+              <p>Jangan Lupa Kerjakan (Kuis/Ujian) <b>$nama_exam</b> pada <b>$tanggal_mulai - $deadline</b> Okeee! Udah Jadi Mahasiswa ITB Jangan Malesss!</p>
+              <p class="exam-detail"><b>Detail Kuis/Ujian</b></p>
+              <p style="text-align: center; margin-top: 10px;">Pengerjaan <b>$tanggal_mulai - $deadline</b> dengan Durasi Pengerjaan <b>$durasi</b>, Kesempatan <b>$kesempatan Kali</b>, dan <b>$can_back</b> Kembali Ke Soal Sebelumnya</p>
+              <p style="font-size: 12px; color: #757575; margin-top: 30px;">$quotes</p>
+              <a href="$url_edunex" class="button">Buka</a>
+            </div>
+        </div>
+        <div class="footer">
+          <img class="footer-logo" src="https://i.imgur.com/Ll7lXRs.png" alt="ITB Logo">
+          <p><b>Edunex Learning Management System for Bandung Institute of Technology</b></p>
+          <p>Diposting pada $tanggal_upload oleh $nama_dosen</p>
+    </div>
+  
+  
+  </body></html>

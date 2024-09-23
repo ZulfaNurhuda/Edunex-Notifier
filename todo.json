@@ -1,0 +1,23 @@
+{
+    "tasks": [],
+    "exams": [
+        {
+            "type": "exam",
+            "code": "WI1103",
+            "course": "STEI_Introduction to Principles of Sustainability [Parent Class]",
+            "name": "Do exam Online Quiz 1",
+            "time": "2024-09-27T17:00:00.000Z",
+            "id": 18367
+        },
+        {
+            "type": "exam",
+            "code": "WI1103",
+            "course": "STEI_Introduction to Principles of Sustainability [Parent Class]",
+            "name": "Do exam Kuis daring 1",
+            "time": "2024-09-27T17:00:00.000Z",
+            "id": 18368
+        }
+    ],
+    "questions": [],
+    "modules": []
+}

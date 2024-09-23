@@ -1,0 +1,12 @@
+<b>📚 • HAI ZULFA NURHUDA, ADA KUIS/UJIAN BARU DI EDUNEX!</b>
+
+<b>$nama_dosen</b> memposting Kuis/Ujian baru di <b>$mata_kuliah</b>
+
+Ayo Kerjakan (Kuis/Ujian) <b>$nama_exam</b> pada <b>$tanggal_mulai</b> - <b>$deadline</b> Okeee! Udah Jadi Mahasiswa ITB Jangan Malesss!
+
+<b><u>Detail Kuis/Ujian</u></b>
+Pengerjaan <b>$tanggal_mulai</b> - <b>$deadline</b> dengan Durasi Pengerjaan <b>$durasi</b>, Kesempatan <b>$kesempatan</b> Kali, dan <b>$can_back</b> Kembali Ke Soal Sebelumnya
+
+<blockquote>$quotes</blockquote>
+
+<code>(Edunex LMS for ITB)</code>
