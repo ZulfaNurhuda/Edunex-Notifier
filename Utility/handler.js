@@ -61,7 +61,7 @@ module.exports = async (client) => {
                     });
                 });
             };
-        } else if (todo.exams.length > 0) {
+        } if (todo.exams.length > 0) {
             for (let i in todo.exams) {
                 DataUjian.findOne({
                     main: JSON.stringify(todo.exams[i]),
