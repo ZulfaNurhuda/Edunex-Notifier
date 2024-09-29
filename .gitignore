@@ -1,3 +1,6 @@
-.env
 node_modules/
+.vscode/
+.gitgignore
+.gitattributes
+.env
 package-lock.json

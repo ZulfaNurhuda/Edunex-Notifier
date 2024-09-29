@@ -1,24 +1,38 @@
-require('dotenv').config({ path: `${process.cwd()}/.env`});
-const TelegramBot = require(`node-telegram-bot-api`);
-const mongoose = require(`mongoose`);
-const handler = require(`./Utility/handler`);
-const database = require(`./Utility/database`);
+require(`dotenv`).config();
+const RogaClient = require(`./Structure/RogaClient`);
+const universalError = require(`./Handler/errorHandler/universalError`);
+const chalk = require("chalk");
+const mongoose = require("mongoose");
 
-const client = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
+const Roga = new RogaClient({
+    sendTo: [`TELEGRAM`, `EMAIL`],
+    token: {
+        telegram: process.env.TELEGRAM_BOT_TOKEN,
+        email: {
+            username: process.env.GMAIL_APP_USERNAME,
+            password: process.env.GMAIL_APP_PASS,
+        },
+    },
+});
 
-if (client) {
-    database().catch(e => console.error(`X | Error: ${e}`));
-    mongoose.connection.on(`connected`, () => {
-        handler(client).then(() => {
-            console.log(`V | System is Ready!`)
-            setInterval(() => {
-                handler(client).catch(e => console.error(`X | Error: ${e}`));
-            }, 1000 * 60 * 5)
-        })
-        .catch(e => console.error(`X | Error: ${e}`));
+Roga.connectDatabase(process.env.MONGO_URI)
+    .then(async (i) => {
+        i.connection.on(`connected`, () => {
+            let bearer = process.env.EDUNEX_BEARER;
+            Roga.edunexHandler({ bearer: bearer, client: Roga })
+                .then(() => {
+                    setInterval(() => {
+                        Roga.edunexHandler({
+                            bearer: bearer,
+                            client: Roga,
+                        }).catch(universalError);
+                    }, 1000 * 60 * 5);
+                })
+                .catch(universalError);
+        });
     })
-}
+    .catch(universalError);
 
-process.on(`warning`, (e) => console.error(`X | Error: ${e}`));
-process.on(`unhandledRejection`, (e) => console.error(`X | Error: ${e}`))
-process.on(`uncaughtException`, (e) => console.error(`X | Error: ${e}`))
+process.on(`warning`, (e) => universalError(e));
+process.on(`unhandledRejection`, (e) => universalError(e));
+process.on(`uncaughtException`, (e) => universalError(e));

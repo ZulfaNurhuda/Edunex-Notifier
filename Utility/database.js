@@ -1,28 +1,49 @@
+/// Load Package
+const chalk = require("chalk");
 const mongoose = require(`mongoose`);
 
-module.exports = async () => {
+/**
+ * **Connect Database Function | RogaBot © 2024 - ZulfaNurhuda.**
+ * ```js
+ * Function Yang Digunakan Untuk Terhubung Dengan Database Dari MongoDB
+ * ```
+ * @param {String} token Mongo URI Untuk Terhubung Dengan MongoDB
+ * @returns {Promise<mongoose>} `Promise<mongoose>` — Database Terhubung
+ * @author `ZulfaNurhuda.` — My Developer
+ */
+async function connectDatabase(token) {
     const dbOptions = {
         autoIndex: false,
         connectTimeoutMS: 10000,
         family: 4,
     };
 
-    mongoose.connect(process.env.MONGO_URI, dbOptions);
+    mongoose.connect(token, dbOptions);
     mongoose.Promise = global.Promise;
 
     mongoose.connection.on(`connecting`, () => {
-        console.log(`- | Mencoba Menyambung Ke Database`);
+        console.log(
+            chalk.bgGray.bold.white(` - | Mencoba Menyambung Ke Database`)
+        );
     });
     mongoose.connection.on(`connected`, () => {
-        console.log(`V | Tersambung Ke Database`);
+        console.log(chalk.bgGreen.bold.white(` V | Tersambung Ke Database `));
     });
     mongoose.connection.on(`reconnecting`, () => {
-        console.log(`- | Mencoba Menyambungkan Ulang Ke Database`);
+        console.log(
+            chalk.bgGray.bold.white(
+                ` - | Mencoba Menyambungkan Ulang Ke Database `
+            )
+        );
     });
     mongoose.connection.on(`disconected`, () => {
-        console.error(`X | Sambungan Database Terputus`);
+        throw new Error(`Sambungan Database Terputus`);
     });
     mongoose.connection.on(`err`, (e) => {
-        console.error(`X | Error: ${e}`);
+        throw new Error(e);
     });
-};
+
+    return mongoose;
+}
+
+module.exports = connectDatabase;
