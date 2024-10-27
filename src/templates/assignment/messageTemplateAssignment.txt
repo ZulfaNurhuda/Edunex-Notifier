@@ -1,0 +1,7 @@
+<b>📚 • HAI ZULFA NURHUDA, ADA TUGAS BARU DI EDUNEX!</b>
+
+<b>$nama_dosen</b> memposting tugas baru di Mata Kuliah <b>$mata_kuliah</b>
+
+Jangan Lupa Untuk Mengerjakan <b>$nama</b>. Tanggal Pengerjaan <code>$tanggal_mulai</code> sampai <code>$deadline</code> Lhooo! Udah Jadi Mahasiswa ITB Jangan Malesss!
+
+<b>🐘 | ᴇᴅᴜɴᴇx - ʟᴍꜱ ꜰᴏʀ ɪᴛʙ</b> $url_edunex
