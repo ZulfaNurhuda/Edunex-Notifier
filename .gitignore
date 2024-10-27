@@ -1,6 +1,6 @@
-node_modules/
-.vscode/
-.gitgignore
-.gitattributes
 .env
+.gitattributes
+.vscode/
+node_modules/
+test/
 package-lock.json

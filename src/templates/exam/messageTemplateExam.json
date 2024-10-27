@@ -1,0 +1,29 @@
+{
+    "content": "# **WAHAI PARA PEJUANG IPK 4!**\n\nHalo @everyone, **$nama_dosen** memposting kuis/ujian baru di Mata Kuliah **$mata_kuliah**\n.",
+    "embeds": [
+      {
+        "description": "Jangan Lupa Untuk Mengerjakan **$nama**. Tanggal Pengerjaan `$tanggal_mulai` sampai `$deadline` Lhooo! Udah Jadi Mahasiswa ITB Jangan Malesss!",
+        "url": "$url_edunex",
+        "color": 1335981,
+        "fields": [
+          {
+            "name": "Detail Kuis/Ujian",
+            "value": "Durasi Pengerjaan **$durasi**, Kesempatan **$kesempatan** Kali, dan **$can_back** Kembali Ke Soal Sebelumnya."
+          }
+        ],
+        "author": {
+          "name": "KUIS/UJIAN BARUUU!",
+          "icon_url": "https://i.imgur.com/vrK7XLE.png"
+        },
+        "footer": {
+          "text": "Edunex - LMS For ITB",
+          "icon_url": "https://i.imgur.com/uVB3mrt.png"
+        },
+        "timestamp": "$tanggal_upload",
+        "thumbnail": {
+          "url": "https://cdn-edunex.itb.ac.id/icons/edunex/favicon.png"
+        }
+      }
+    ],
+    "attachments": []
+}
