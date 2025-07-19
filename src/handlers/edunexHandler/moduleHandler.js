@@ -1,8 +1,7 @@
 /**
  * @fileoverview This file contains a generic handler for Edunex modules (assignments and exams).
- * @version 2.0.0
+ * @version 3.0.0
  * @author Zulfa Nurhuda
- * @copyright 2024 Zulfa Nurhuda
  */
 
 /// Import Packages
