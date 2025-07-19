@@ -109,7 +109,7 @@ async function moduleHandler(options, model, moduleType) {
                     };
                 }
 
-                await sendData[`${moduleType}Type`]({ client, message });
+                await sendData[`${moduleType}Type`]({ client, message, url_edunex: message.url_edunex });
 
                 const newModule = new model({
                     _id: new mongoose.Types.ObjectId(),

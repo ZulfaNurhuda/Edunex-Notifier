@@ -524,24 +524,24 @@ class RogaClient {
 
         try {
             this.#connectDatabase({ mongoURI: this.config.mongoURI });
-            if (this.config.gmailUsername && this.config.gmailPassword) {
+            if (this.config.gmailAppUsername && this.config.gmailAppPassword) {
                 this.#connectEmail({
-                    username: this.config.gmailUsername,
-                    password: this.config.gmailPassword,
+                    username: this.config.gmailAppUsername,
+                    password: this.config.gmailAppPassword,
                 });
                 Object.assign(data, { gmailClient: this.gmailClient });
             }
-            if (this.config.telegramToken) {
-                this.#connectTelegramBot({ token: this.config.telegramToken });
+            if (this.config.telegramBotToken) {
+                this.#connectTelegramBot({ token: this.config.telegramBotToken });
                 Object.assign(data, { telegramClient: this.telegramClient });
             }
-            if (this.config.discordToken) {
-                this.#connectDiscordBot({ token: this.config.discordToken });
+            if (this.config.discordBotToken) {
+                this.#connectDiscordBot({ token: this.config.discordBotToken });
                 Object.assign(data, { discordClient: this.discordClient });
             }
-            if (this.config.discordWebhook) {
+            if (this.config.discordWebhookUrl) {
                 this.#connectDiscordWebhook({
-                    url: this.config.discordWebhook,
+                    url: this.config.discordWebhookUrl,
                 });
                 Object.assign(data, { webhookClient: this.webhookClient });
             }
