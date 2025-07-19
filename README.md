@@ -27,7 +27,7 @@ Edunex Notifier is a bot that notifies you about new assignments and exams on Ed
 
 3.  Create a `.env` file in the root directory of the project and add the following environment variables:
 
-    ```
+    ```env
     EDUNEX_BEARER=
     GMAIL_APP_USERNAME=
     GMAIL_APP_PASSWORD=
