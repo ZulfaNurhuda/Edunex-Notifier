@@ -1,3 +1,10 @@
+/**
+ * @fileoverview This file contains the logic for sending emails.
+ * @version 2.0.0
+ * @author Zulfa Nurhuda
+ * @copyright 2024 Zulfa Nurhuda
+ */
+
 /// Import Structures
 const RogaError = require(`../../structures/RogaError`);
 
@@ -7,7 +14,7 @@ const RogaError = require(`../../structures/RogaError`);
  * @param {RogaClient} options.client The RogaClient instance.
  * @param {string} options.message The message to send.
  * @returns {Promise<void>}
- * @throws {RogaError}
+ * @throws {RogaError} If an error occurs while sending the email.
  */
 async function sendEmail({ client, message }) {
     if (!client.gmailClient) {
@@ -16,8 +23,8 @@ async function sendEmail({ client, message }) {
 
     try {
         await client.gmailClient.sendMail({
-            from: `"RogaBot" <${client.config.gmailUsername}>`,
-            to: client.config.defaultUsers.gmailUsername,
+            from: `"RogaBot" <${client.config.gmailAppUsername}>`,
+            to: client.config.gmailDest,
             subject: 'Edunex Notifier',
             html: message,
         });

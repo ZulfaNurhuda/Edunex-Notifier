@@ -1,3 +1,10 @@
+/**
+ * @fileoverview This file contains the logic for sending messages to a Telegram bot.
+ * @version 2.0.0
+ * @author Zulfa Nurhuda
+ * @copyright 2024 Zulfa Nurhuda
+ */
+
 /// Import Structures
 const RogaError = require(`../../structures/RogaError`);
 
@@ -8,7 +15,7 @@ const RogaError = require(`../../structures/RogaError`);
  * @param {string} options.message The message to send.
  * @param {string} options.url_edunex The URL to the Edunex page.
  * @returns {Promise<void>}
- * @throws {RogaError}
+ * @throws {RogaError} If an error occurs while sending the message.
  */
 async function sendMessageTelegram({ client, message, url_edunex }) {
     if (!client.telegramClient) {
@@ -17,7 +24,7 @@ async function sendMessageTelegram({ client, message, url_edunex }) {
 
     try {
         await client.telegramClient.sendMessage(
-            client.config.defaultUsers.telegramChatId,
+            client.config.telegramDest,
             message,
             {
                 parse_mode: 'HTML',

@@ -1,3 +1,10 @@
+/**
+ * @fileoverview This file contains the main class for the RogaBot.
+ * @version 2.0.0
+ * @author Zulfa Nurhuda
+ * @copyright 2024 Zulfa Nurhuda
+ */
+
 /// Import Packages
 const Discord = require(`discord.js`);
 const mongoose = require(`mongoose`);
@@ -19,47 +26,8 @@ const database = require(`../utils/database`);
 const edunexHandler = require(`../handlers/edunexHandler/handler`);
 
 /**
- * ## **Kelas RogaClient | RogaBot © 2024 - ZulfaNurhuda**
- *
- * Kelas utama untuk menginisialisasi dan mengelola semua aktivitas RogaBot.
- * Kelas ini bertanggung jawab dalam mengonfigurasi layanan penting seperti Edunex API, MongoDB, Gmail, Telegram, dan Discord.
- *
- * ### Fitur:
- * - **Manajemen Konfigurasi:** Memuat dan mengelola konfigurasi untuk berbagai layanan.
- * - **Integrasi Layanan:** Menghubungkan Edunex API ke API MongoDB, Gmail, Telegram, dan Discord.
- * - **Penanganan Error:** Menyediakan mekanisme untuk menangkap dan menangani error secara efisien.
- * - **Notifikasi Pengguna:** Mengelola pengguna default dan pengaturan notifikasi untuk laporan error.
- *
- * ### Contoh Penggunaan:
- * ```js
- * const RogaClient = require(`path-to-rogaclient`);
- * const Roga = new RogaClient();
- * (async () => {
- *     try {
- *         await Roga.loadConfig({
- *             mongoURI: `your-mongo-uri`,
- *             gmailUsername: `your-gmail-username`,
- *             gmailPassword: `your-gmail-app-pass`,
- *             edunexBearer: `your-edunex-api-bearer`,
- *             telegramToken: `your-telegram-bot-token`,
- *             discordToken: `your-discord-bot-token`,
- *             discordWebhook: `your-discord-webhook-url`,
- *             defaultUsers: {
- *                 telegramUserId: `your-telegram-user-id`,
- *                 gmailUsername: `your-gmail-username`,
- *                 discordUserId: `your-discord-user-id`,
- *                 webhookURL: `your-webhook-url`,
- *             },
- *         });
- *         await Roga.start();
- *         console.log(`RogaBot sukses berjalan!`);
- *     } catch (error) {
- *         console.error(`Gagal menjalankan inisialisasi RogaClient:`, error);
- *     }
- * ```
- *
- * @class **RogaClient**
- * @author `ZulfaNurhuda.` — My Developer
+ * The main class for the RogaBot.
+ * @class RogaClient
  */
 class RogaClient {
     /**
@@ -107,7 +75,8 @@ class RogaClient {
      * Connects to the MongoDB database.
      * @param {RogaTypes.DatabaseCredentials} options The database credentials.
      * @returns {Promise<void>}
-     * @throws {RogaError}
+     * @throws {RogaError} If an error occurs while connecting to the database.
+     * @private
      */
     async #connectDatabase(options) {
         if (!options || typeof options !== `object`) {
@@ -176,8 +145,9 @@ class RogaClient {
     /**
      * Connects to the Gmail SMTP server.
      * @param {RogaTypes.GmailCredentials} options The Gmail credentials.
-     * @returns {Promise<Mailer>}
-     * @throws {RogaError}
+     * @returns {Promise<Mailer>} The Nodemailer transporter.
+     * @throws {RogaError} If an error occurs while connecting to the Gmail SMTP server.
+     * @private
      */
     async #connectEmail(options) {
         if (!options || typeof options !== `object`) {
@@ -226,8 +196,9 @@ class RogaClient {
     /**
      * Connects to the Telegram bot.
      * @param {RogaTypes.TelegramBotCredentials} options The Telegram bot credentials.
-     * @returns {Promise<Telegram>}
-     * @throws {RogaError}
+     * @returns {Promise<Telegram>} The Telegram bot instance.
+     * @throws {RogaError} If an error occurs while connecting to the Telegram bot.
+     * @private
      */
     async #connectTelegramBot(options) {
         if (!options || typeof options !== `object`) {
@@ -265,8 +236,9 @@ class RogaClient {
     /**
      * Connects to the Discord bot.
      * @param {RogaTypes.DiscordBotCredentials} options The Discord bot credentials.
-     * @returns {Promise<Discord.Client>}
-     * @throws {RogaError}
+     * @returns {Promise<Discord.Client>} The Discord client instance.
+     * @throws {RogaError} If an error occurs while connecting to the Discord bot.
+     * @private
      */
     async #connectDiscordBot(options) {
         if (!options || typeof options !== `object`) {
@@ -338,8 +310,9 @@ class RogaClient {
     /**
      * Connects to the Discord webhook.
      * @param {RogaTypes.DiscordWebhookCredentials} options The Discord webhook credentials.
-     * @returns {Promise<Discord.WebhookClient>}
-     * @throws {RogaError}
+     * @returns {Promise<Discord.WebhookClient>} The Discord webhook client instance.
+     * @throws {RogaError} If an error occurs while connecting to the Discord webhook.
+     * @private
      */
     async #connectDiscordWebhook(options) {
         if (!options || typeof options !== `object`) {
@@ -379,8 +352,9 @@ class RogaClient {
      * @param {Function} fn The function to retry.
      * @param {number} retries The number of retries.
      * @param {number} delay The delay between retries.
-     * @returns {Promise<any>}
-     * @throws {any}
+     * @returns {Promise<any>} The result of the function.
+     * @throws {any} The error of the last retry.
+     * @private
      */
     async #withRetry(fn, retries = 3, delay = 1000) {
         try {
@@ -394,6 +368,13 @@ class RogaClient {
         }
     }
 
+    /**
+     * Handles the Edunex API requests.
+     * @param {RogaTypes.EdunexHandlerOptions} options The options for the handler.
+     * @returns {Promise<void>}
+     * @throws {RogaError} If an error occurs while handling the Edunex API requests.
+     * @private
+     */
     async #edunexHandler(options) {
         if (!options || typeof options !== `object`) {
             throw new RogaError(
@@ -427,8 +408,8 @@ class RogaClient {
     /**
      * Sets the bot's active status.
      * @param {RogaTypes.RogaActiveStatus} status The new status.
-     * @returns {Promise<boolean>}
-     * @throws {RogaError}
+     * @returns {Promise<boolean>} The new status.
+     * @throws {RogaError} If the status is not valid.
      */
     async setStatus(status) {
         if (
@@ -452,8 +433,8 @@ class RogaClient {
     /**
      * Loads the bot's configuration.
      * @param {RogaTypes.RogaConfigurations} config The configuration object.
-     * @returns {Promise<RogaTypes.RogaConfigurations>}
-     * @throws {RogaError}
+     * @returns {Promise<RogaTypes.RogaConfigurations>} The loaded configuration.
+     * @throws {RogaError} If the configuration is not valid.
      */
     async loadConfig(config) {
         console.log(
@@ -500,8 +481,8 @@ class RogaClient {
 
     /**
      * Starts the bot.
-     * @returns {Promise<RogaTypes.StartReturnedData>}
-     * @throws {RogaError}
+     * @returns {Promise<RogaTypes.StartReturnedData>} An object containing all the initialized clients.
+     * @throws {RogaError} If the configuration is not loaded or an error occurs while starting the bot.
      */
     async start() {
         if (!this.config) {
@@ -517,7 +498,7 @@ class RogaClient {
         );
 
         /**
-         * Data semua client yang di inisialisasi.
+         * An object containing all the initialized clients.
          * @type {RogaTypes.StartReturnedData}
          */
         const data = {};

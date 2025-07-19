@@ -1,3 +1,10 @@
+/**
+ * @fileoverview This file contains the logic for sending messages to a Discord webhook.
+ * @version 2.0.0
+ * @author Zulfa Nurhuda
+ * @copyright 2024 Zulfa Nurhuda
+ */
+
 /// Import Structures
 const RogaError = require(`../../structures/RogaError`);
 const Discord = require('discord.js');
@@ -8,7 +15,7 @@ const Discord = require('discord.js');
  * @param {RogaClient} options.client The RogaClient instance.
  * @param {string} options.message The message to send.
  * @returns {Promise<void>}
- * @throws {RogaError}
+ * @throws {RogaError} If an error occurs while sending the message.
  */
 async function sendDiscordWebhook({ client, message }) {
     if (!client.webhookClient) {

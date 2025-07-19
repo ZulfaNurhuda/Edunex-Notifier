@@ -1,3 +1,10 @@
+/**
+ * @fileoverview This file contains a generic handler for Edunex modules (assignments and exams).
+ * @version 2.0.0
+ * @author Zulfa Nurhuda
+ * @copyright 2024 Zulfa Nurhuda
+ */
+
 /// Import Packages
 const moment = require(`moment-timezone`);
 const mongoose = require(`mongoose`);
@@ -23,7 +30,7 @@ const sendData = require(`../../services/platformSendMessage/send`);
  * @param {mongoose.Model} model The Mongoose model to use.
  * @param {string} moduleType The type of the module (e.g., "assignment", "exam").
  * @returns {Promise<void>}
- * @throws {RogaError}
+ * @throws {RogaError} If an error occurs while handling the module.
  */
 async function moduleHandler(options, model, moduleType) {
     if (!options || typeof options !== `object`) {

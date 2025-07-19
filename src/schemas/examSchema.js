@@ -1,12 +1,23 @@
-/// Import Packages
-const mongoose = require(`mongoose`);
+/**
+ * @fileoverview This file contains the Mongoose schema for exams.
+ * @version 2.0.0
+ * @author Zulfa Nurhuda
+ * @copyright 2024 Zulfa Nurhuda
+ */
 
-/// Inisiasi Schema Exam
-const exam = new mongoose.Schema({
+const mongoose = require('mongoose');
+
+const examSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    examId: Number,
-    examData: String,
+    examId: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    examData: {
+        type: String,
+        required: true,
+    },
 });
 
-/// Export Model
-module.exports = mongoose.model(`Exam`, exam, `exam`);
+module.exports = mongoose.model('Exam', examSchema);

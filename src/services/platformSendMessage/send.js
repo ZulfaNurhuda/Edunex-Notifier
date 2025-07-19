@@ -1,3 +1,10 @@
+/**
+ * @fileoverview This file contains the main logic for sending notifications to all supported platforms.
+ * @version 2.0.0
+ * @author Zulfa Nurhuda
+ * @copyright 2024 Zulfa Nurhuda
+ */
+
 /// Import Packages
 const fs = require(`fs`);
 const path = require(`path`);
@@ -19,7 +26,7 @@ const sendDiscordBot = require(`./sendDiscordBot.js`);
  * Capitalizes the first letter of a string.
  * @param {string} str The string to capitalize.
  * @returns {string} The capitalized string.
- * @throws {RogaError}
+ * @throws {RogaError} If the input is not a valid string.
  */
 function capitalizeFirstLetter(str) {
     if (!str || typeof str !== `string`) {
@@ -29,6 +36,7 @@ function capitalizeFirstLetter(str) {
 }
 
 /**
+ * An object to store the loaded templates.
  * @type {RogaTypes.TemplateFile}
  */
 const templateFile = {};
@@ -36,7 +44,7 @@ const templateFile = {};
 /**
  * Loads all the templates from the `src/templates` directory.
  * @returns {Promise<void>}
- * @throws {RogaError}
+ * @throws {RogaError} If an error occurs while loading the templates.
  */
 async function loadTemplates() {
     const types = [`assignment`, `exam`];
@@ -75,7 +83,7 @@ async function loadTemplates() {
  * Replaces the variables in a template with the given values.
  * @param {RogaTypes.ReplacerOptions} options The options for replacing the variables.
  * @returns {string} The template with the variables replaced.
- * @throws {RogaError}
+ * @throws {RogaError} If the template is not found or a required parameter is missing.
  */
 function replacerVariable(options) {
     let data = templateFile[options.type][options.platform];
@@ -100,7 +108,7 @@ function replacerVariable(options) {
  * @param {string} type The type of the message to send.
  * @param {RogaTypes.SendDataAssignment|RogaTypes.SendDataExam} options The options for sending the message.
  * @returns {Promise<void>}
- * @throws {RogaError}
+ * @throws {RogaError} If an error occurs while sending the message.
  */
 async function sendMessage(type, options) {
     if (!type || ![`assignment`, `exam`].includes(type)) {
@@ -200,7 +208,7 @@ async function sendMessage(type, options) {
  * Sends an exam notification.
  * @param {RogaTypes.SendDataExam} options The options for sending the notification.
  * @returns {Promise<void>}
- * @throws {RogaError}
+ * @throws {RogaError} If an error occurs while sending the notification.
  */
 async function examType(options) {
     await sendMessage('exam', options);
@@ -210,7 +218,7 @@ async function examType(options) {
  * Sends an assignment notification.
  * @param {RogaTypes.SendDataAssignment} options The options for sending the notification.
  * @returns {Promise<void>}
- * @throws {RogaError}
+ * @throws {RogaError} If an error occurs while sending the notification.
  */
 async function assignmentType(options) {
     await sendMessage('assignment', options);

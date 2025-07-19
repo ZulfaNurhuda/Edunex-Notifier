@@ -1,12 +1,23 @@
-/// Import Packages
-const mongoose = require(`mongoose`);
+/**
+ * @fileoverview This file contains the Mongoose schema for assignments.
+ * @version 2.0.0
+ * @author Zulfa Nurhuda
+ * @copyright 2024 Zulfa Nurhuda
+ */
 
-/// Inisiasi Schema Assignment
-const assignment = new mongoose.Schema({
+const mongoose = require('mongoose');
+
+const assignmentSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    assignmentId: Number,
-    assignmentData: String,
+    assignmentId: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    assignmentData: {
+        type: String,
+        required: true,
+    },
 });
 
-/// Export Model
-module.exports = mongoose.model(`Assignment`, assignment, `assignment`);
+module.exports = mongoose.model('Assignment', assignmentSchema);

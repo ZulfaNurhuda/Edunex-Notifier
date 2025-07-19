@@ -1,3 +1,10 @@
+/**
+ * @fileoverview This is the main entry point of the application.
+ * @version 2.0.0
+ * @author Zulfa Nurhuda
+ * @copyright 2024 Zulfa Nurhuda
+ */
+
 /// Import Packages
 const chalk = require(`chalk`);
 
@@ -16,12 +23,15 @@ const gracefulShutdown = require(`./handlers/errorHandler/gracefulShutdown`);
 const Roga = new RogaClient();
 (async () => {
     try {
+        // Load the configuration
         await Roga.loadConfig(configurations);
         console.log(
             chalk.bgGreen.whiteBright(
                 ` ✔️ | [RogaBot] Konfigurasi Berhasil Dimuat! `
             )
         );
+
+        // Start the bot
         await Roga.start();
         console.log(
             chalk.bgGreen.whiteBright(` ✔️ | [RogaBot] Berhasil Aktif! `)
