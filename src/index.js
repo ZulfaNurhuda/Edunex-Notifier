@@ -2,7 +2,7 @@
 const chalk = require(`chalk`);
 
 /// Import Configurations
-require(`dotenv`).config();
+require('dotenv').config();
 const configurations = require(`./configs/config`);
 
 /// Import Structures

@@ -42,6 +42,8 @@ const configurations = {
     defaultUsers: {
         webhookURL: process.env.DISCORD_WEBHOOK,
     },
+    edunexHandlerInterval:
+        process.env.EDUNEX_HANDLER_INTERVAL || 1000 * 60 * 5,
 };
 
 module.exports = configurations;

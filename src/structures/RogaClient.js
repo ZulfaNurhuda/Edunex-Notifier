@@ -63,68 +63,51 @@ const edunexHandler = require(`../handlers/edunexHandler/handler`);
  */
 class RogaClient {
     /**
-     * @constructor Menginisialisasi properti default RogaClient.
+     * @constructor Initializes the default properties of the RogaClient.
      */
     constructor() {
         /**
-         * **Menyimpan instance klien email.**
-         * @type {Mailer}: Tipe data yang merepresentasikan client Mailer nodemailer.
+         * The email client instance.
+         * @type {Mailer}
          */
         this.gmailClient = null;
 
         /**
-         * **Menyimpan instance klien bot Telegram.**
-         * @type {Telegram}: Tipe data yang merepresentasikan client Telegram bot.
+         * The Telegram bot client instance.
+         * @type {Telegram}
          */
         this.telegramClient = null;
 
         /**
-         * **Menyimpan instance klien bot Discord.**
-         * @type {Discord.Client}: Tipe data yang merepresentasikan client Discord bot.
+         * The Discord bot client instance.
+         * @type {Discord.Client}
          */
         this.discordClient = null;
 
         /**
-         * **Menyimpan instance klien webhook Discord.**
-         * @type {Discord.WebhookClient}: Tipe data yang merepresentasikan client Discord webhook.
+         * The Discord webhook client instance.
+         * @type {Discord.WebhookClient}
          */
         this.webhookClient = null;
 
         /**
-         * **Menyimpan konfigurasi bot.**
-         * @type {RogaTypes.RogaConfigurations}: Tipe data yang merepresentasikan konfigurasi RogaClient.
+         * The bot's configuration.
+         * @type {RogaTypes.RogaConfigurations}
          */
         this.config = null;
 
         /**
-         * Status aktif bot.
-         * @type {boolean}: Tipe data yang merepresentasikan status bot. Menunjukkan `true` jika aktif, `false` jika tidak.
+         * The bot's active status.
+         * @type {boolean}
          */
         this.isActive = true;
     }
 
     /**
-     * ## **_#connectDatabase_ Function | RogaBot © 2024 - ZulfaNurhuda**
-     *
-     * Fungsi ini digunakan untuk menghubungkan `RogaClient` dengan basis data MongoDB. Jika koneksi berhasil, fungsi akan memulai pengelolaan koneksi dan menjalankan `#edunexHandler` untuk memperbarui data sesuai interval waktu yang ditentukan. Jika koneksi gagal, fungsi akan melempar error dan bot otomatis menonaktifkan status aktif.
-     *
-     * ### Informasi Tambahan:
-     * - Pastikan opsi `mongoURI` valid dan tersedia sebelum memanggil fungsi ini.
-     * - Event listener `connected`, `disconnected`, dan `error` ditambahkan untuk memantau status koneksi MongoDB.
-     * - Ketika koneksi berhasil, handler Edunex akan dijalankan pertama kali dan diulang setiap 5 menit untuk memperbarui data.
-     *
-     * ### Contoh Penggunaan:
-     * ```js
-     * const options = {
-     *     mongoURI: `your-mongo-uri`,
-     * };
-     * await #connectDatabase(options);
-     * ```
-     *
-     * @param {RogaTypes.DatabaseCredentials} options Konfigurasi kredensial database, termasuk `mongoURI` sebagai URI untuk koneksi MongoDB.
-     * @returns {Promise<void>} Mengembalikan `Promise<void>` yang menunjukkan bahwa koneksi database berhasil dibuat.
-     * @throws {RogaError} Jika terjadi kesalahan saat menghubungkan ke database atau opsi `mongoURI` tidak valid.
-     * @author `ZulfaNurhuda.` — My Developer
+     * Connects to the MongoDB database.
+     * @param {RogaTypes.DatabaseCredentials} options The database credentials.
+     * @returns {Promise<void>}
+     * @throws {RogaError}
      */
     async #connectDatabase(options) {
         if (!options || typeof options !== `object`) {
@@ -165,7 +148,7 @@ class RogaClient {
                         bearer: this.config.edunexBearer,
                         client: this,
                     });
-                }, 1000 * 60 * 5);
+                }, this.config.edunexHandlerInterval);
             });
 
             mongoose.connection.on(`disconnected`, () => {
@@ -191,27 +174,10 @@ class RogaClient {
     }
 
     /**
-     * ## **_#connectEmail_ Function | RogaBot © 2024 - ZulfaNurhuda**
-     *
-     * Fungsi ini menghubungkan `RogaClient` ke akun Gmail menggunakan kredensial yang diberikan. Setelah terhubung, fungsi menginisialisasi klien Gmail dengan konfigurasi SMTP yang sesuai. Jika kredensial salah atau koneksi gagal, fungsi akan melempar error.
-     *
-     * ### Informasi Tambahan:
-     * - Pastikan opsi `username` dan `password` sudah valid sebelum memanggil fungsi ini.
-     * - Fungsi ini mengandalkan protokol SMTP Gmail untuk melakukan otentikasi dan verifikasi klien.
-     * - Ketika koneksi berhasil, instance klien Gmail siap digunakan untuk pengiriman notifikasi dan email otomatis.
-     *
-     * ### Contoh Penggunaan:
-     * ```js
-     * const options = {
-     *     username: `your-gmail-username`,
-     *     password: `your-gmail-password`,
-     * };
-     * await #connectEmail(options);
-     * ```
-     *
-     * @param {RogaTypes.GmailCredentials} options Konfigurasi kredensial Gmail, termasuk `username` sebagai nama pengguna Gmail dan `password` sebagai sandi aplikasi Gmail.
-     * @returns {Promise<Mailer>} Mengembalikan instance klien Gmail yang siap digunakan.
-     * @throws {RogaError} Jika terjadi kesalahan dalam koneksi ke Gmail atau kredensial tidak valid.
+     * Connects to the Gmail SMTP server.
+     * @param {RogaTypes.GmailCredentials} options The Gmail credentials.
+     * @returns {Promise<Mailer>}
+     * @throws {RogaError}
      */
     async #connectEmail(options) {
         if (!options || typeof options !== `object`) {
@@ -258,26 +224,10 @@ class RogaClient {
     }
 
     /**
-     * ## **_#connectTelegramBot_ Function | RogaBot © 2024 - ZulfaNurhuda**
-     *
-     * Fungsi ini menghubungkan `RogaClient` ke bot Telegram menggunakan token autentikasi yang diberikan. Setelah berhasil, klien bot Telegram siap menerima dan mengirimkan pesan melalui polling. Jika token salah atau koneksi gagal, fungsi akan melempar error.
-     *
-     * ### Informasi Tambahan:
-     * - Token bot Telegram harus valid dan terkait dengan akun bot Telegram aktif.
-     * - Fungsi ini menggunakan opsi polling untuk mendengarkan pesan masuk secara real-time.
-     * - Koneksi ini memungkinkan RogaBot mengirimkan notifikasi dan menerima perintah melalui Telegram.
-     *
-     * ### Contoh Penggunaan:
-     * ```js
-     * const options = {
-     *     token: `your-telegram-bot-token`,
-     * };
-     * await #connectTelegramBot(options);
-     * ```
-     *
-     * @param {RogaTypes.TelegramBotCredentials} options Konfigurasi kredensial Telegram, termasuk `token` yang diperlukan untuk mengautentikasi bot.
-     * @returns {Promise<Telegram>} Mengembalikan instance klien Telegram yang siap digunakan untuk komunikasi bot.
-     * @throws {RogaError} Jika terjadi kesalahan dalam menghubungkan ke Telegram atau token tidak valid.
+     * Connects to the Telegram bot.
+     * @param {RogaTypes.TelegramBotCredentials} options The Telegram bot credentials.
+     * @returns {Promise<Telegram>}
+     * @throws {RogaError}
      */
     async #connectTelegramBot(options) {
         if (!options || typeof options !== `object`) {
@@ -313,26 +263,10 @@ class RogaClient {
     }
 
     /**
-     * ## **_#connectDiscordBot_ Function | RogaBot © 2024 - ZulfaNurhuda**
-     *
-     * Fungsi ini menghubungkan `RogaClient` ke bot Discord menggunakan token yang diberikan untuk autentikasi. Setelah berhasil, bot Discord siap beroperasi dengan berbagai intent dan partial yang diaktifkan untuk mengelola perintah dan interaksi server secara komprehensif.
-     *
-     * ### Informasi Tambahan:
-     * - Token bot Discord harus valid dan sesuai dengan izin aplikasi Discord.
-     * - Fungsi ini mengaktifkan berbagai intent dan partial yang diperlukan untuk mendengarkan pesan, reaksi, anggota guild, dan status guild.
-     * - Saat koneksi berhasil, event listener `ready` diaktifkan untuk memberi notifikasi bahwa bot siap digunakan.
-     *
-     * ### Contoh Penggunaan:
-     * ```js
-     * const options = {
-     *     token: `your-discord-bot-token`,
-     * };
-     * await #connectDiscordBot(options);
-     * ```
-     *
-     * @param {RogaTypes.DiscordBotCredentials} options Konfigurasi kredensial Discord, termasuk `token` untuk mengautentikasi bot.
-     * @returns {Promise<Discord.Client>} Mengembalikan instance klien Discord yang siap digunakan untuk komunikasi bot.
-     * @throws {RogaError} Jika terjadi kesalahan dalam koneksi ke Discord atau token tidak valid.
+     * Connects to the Discord bot.
+     * @param {RogaTypes.DiscordBotCredentials} options The Discord bot credentials.
+     * @returns {Promise<Discord.Client>}
+     * @throws {RogaError}
      */
     async #connectDiscordBot(options) {
         if (!options || typeof options !== `object`) {
@@ -402,26 +336,10 @@ class RogaClient {
     }
 
     /**
-     * ## **_#connectDiscordWebhook_ Function | RogaBot © 2024 - ZulfaNurhuda**
-     *
-     * Fungsi ini menghubungkan `RogaClient` ke webhook Discord menggunakan URL yang diberikan. Setelah berhasil, klien webhook Discord siap untuk mengirim pesan notifikasi atau laporan error ke saluran yang ditentukan. Jika URL tidak valid atau koneksi gagal, fungsi akan melempar error.
-     *
-     * ### Informasi Tambahan:
-     * - Pastikan URL webhook yang digunakan valid dan sudah dikonfigurasi pada server Discord yang benar.
-     * - Webhook memungkinkan pengiriman pesan langsung ke saluran Discord tanpa kehadiran bot penuh.
-     * - Saat koneksi berhasil, instance webhook siap digunakan untuk mengirim pesan otomatis dan notifikasi lainnya.
-     *
-     * ### Contoh Penggunaan:
-     * ```js
-     * const options = {
-     *     url: `your-discord-webhook-url`,
-     * };
-     * await #connectDiscordWebhook(options);
-     * ```
-     *
-     * @param {RogaTypes.DiscordWebhookCredentials} options Konfigurasi kredensial webhook Discord, termasuk `url` untuk autentikasi webhook.
-     * @returns {Promise<Discord.WebhookClient>} Mengembalikan instance klien webhook Discord yang siap digunakan untuk komunikasi.
-     * @throws {RogaError} Jika terjadi kesalahan dalam koneksi ke webhook Discord atau URL tidak valid.
+     * Connects to the Discord webhook.
+     * @param {RogaTypes.DiscordWebhookCredentials} options The Discord webhook credentials.
+     * @returns {Promise<Discord.WebhookClient>}
+     * @throws {RogaError}
      */
     async #connectDiscordWebhook(options) {
         if (!options || typeof options !== `object`) {
@@ -457,28 +375,25 @@ class RogaClient {
     }
 
     /**
-     * ## **_#edunexHandler_ Function | RogaBot © 2024 - ZulfaNurhuda**
-     *
-     * Handler ini digunakan untuk menghubungkan `RogaClient` dengan Edunex Learning Management System (LMS) milik Institut Teknologi Bandung. Fungsi ini berfungsi untuk mendapatkan data `todo` dari Edunex API dan memproses tugas serta ujian jika tersedia. Jika terjadi kesalahan selama proses, handler akan menonaktifkan client dan memanggil fungsi penanganan error Edunex.
-     *
-     * ### Informasi Tambahan:
-     * - Pastikan bahwa `client` dalam status aktif sebelum memanggil handler ini.
-     * - Fungsi ini menangani dua jenis data utama: tugas (assignment) dan ujian (exam) dari LMS.
-     * - Jika terjadi kesalahan pada API Edunex, bot akan otomatis menonaktifkan `client`.
-     *
-     * ### Contoh Penggunaan:
-     * ```js
-     * const options = {
-     *     client: RogaClient,
-     *     bearer: `your-edunex-api-bearer`,
-     * };
-     * await #edunexHandler(options);
-     * ```
-     *
-     * @param {RogaTypes.EdunexHandlerOptions} options Opsi konfigurasi untuk menjalankan Edunex Handler, termasuk instance client dan token bearer untuk autentikasi.
-     * @returns {Promise<void>} Mengembalikan `Promise<void>` yang menandakan handler berhasil dijalankan dan data dari API Edunex telah diproses.
-     * @throws {RogaError} Jika terjadi kesalahan dalam memproses API atau jika respons Edunex menunjukkan adanya error.
+     * Retries a function a given number of times.
+     * @param {Function} fn The function to retry.
+     * @param {number} retries The number of retries.
+     * @param {number} delay The delay between retries.
+     * @returns {Promise<any>}
+     * @throws {any}
      */
+    async #withRetry(fn, retries = 3, delay = 1000) {
+        try {
+            return await fn();
+        } catch (error) {
+            if (retries > 0) {
+                await new Promise(resolve => setTimeout(resolve, delay));
+                return this.#withRetry(fn, retries - 1, delay * 2);
+            }
+            throw error;
+        }
+    }
+
     async #edunexHandler(options) {
         if (!options || typeof options !== `object`) {
             throw new RogaError(
@@ -501,31 +416,19 @@ class RogaClient {
         }
 
         try {
-            await edunexHandler({ bearer, client });
+            await this.#withRetry(async () => {
+                await edunexHandler({ bearer, client });
+            });
         } catch (error) {
             throw new RogaError(error.message || error);
         }
     }
 
     /**
-     * ## **_setStatus_ Function | RogaBot © 2024 - ZulfaNurhuda**
-     *
-     * Fungsi ini digunakan untuk mengubah status aktif atau nonaktif `RogaClient` sesuai dengan status yang ditentukan. Jika status yang diberikan tidak valid, fungsi akan melempar error.
-     *
-     * ### Informasi Tambahan:
-     * - Status yang diterima adalah `active` untuk mengaktifkan bot atau `inactive` untuk menonaktifkannya.
-     * - Perubahan status akan mempengaruhi respons dan tindakan bot secara keseluruhan.
-     * - Status bot akan tercetak di log setiap kali terjadi perubahan.
-     *
-     * ### Contoh Penggunaan:
-     * ```js
-     * await setStatus(`active`); // Mengaktifkan bot
-     * await setStatus(`inactive`); // Menonaktifkan bot
-     * ```
-     *
-     * @param {RogaTypes.RogaActiveStatus} status Status baru untuk bot, baik `active` maupun `inactive`.
-     * @returns {Promise<boolean>} Mengembalikan `true` jika status berhasil diatur menjadi `active`, atau `false` jika `inactive`.
-     * @throws {RogaError} Jika status yang diberikan tidak valid (bukan `active` atau `inactive`).
+     * Sets the bot's active status.
+     * @param {RogaTypes.RogaActiveStatus} status The new status.
+     * @returns {Promise<boolean>}
+     * @throws {RogaError}
      */
     async setStatus(status) {
         if (
@@ -547,37 +450,10 @@ class RogaClient {
     }
 
     /**
-     * ## **_loadConfig_ Function | RogaBot © 2024 - ZulfaNurhuda**
-     *
-     * Fungsi ini memuat konfigurasi awal `RogaClient`, yang mencakup pengaturan untuk koneksi database, API Edunex, dan layanan lainnya. Konfigurasi yang tidak valid atau kosong akan menyebabkan fungsi ini melempar error. Konfigurasi yang berhasil dimuat akan tersedia untuk digunakan oleh seluruh modul bot.
-     *
-     * ### Informasi Tambahan:
-     * - `mongoURI` dan `edunexBearer` adalah parameter wajib untuk memuat konfigurasi ini dengan benar.
-     * - Fungsi ini menginisialisasi konfigurasi dan mencetak log keberhasilan setelah berhasil memuatnya.
-     * - Pastikan semua konfigurasi yang dibutuhkan sudah benar untuk menghindari error saat bot beroperasi.
-     *
-     * ### Contoh Penggunaan:
-     * ```js
-     * const config = {
-     *     mongoURI: `your-mongo-uri`,
-     *     gmailUsername: `your-gmail-username`,
-     *     gmailPassword: `your-gmail-app-pass`,
-     *     edunexBearer: `your-edunex-api-bearer`,
-     *     telegramToken: `your-telegram-bot-token`,
-     *     discordToken: `your-discord-bot-token`,
-     *     discordWebhook: `your-discord-webhook-url`,
-     *     defaultUsers: {
-     *         telegramUserId: `your-telegram-user-id`,
-     *         gmailUsername: `your-gmail-username`,
-     *         discordUserId: `your-discord-user-id`,
-     *         webhookURL: `your-webhook-url`,
-     * };
-     * await loadConfig(config);
-     * ```
-     *
-     * @param {RogaTypes.RogaConfigurations} config Objek konfigurasi untuk `RogaClient`, berisi parameter yang diperlukan untuk berbagai layanan.
-     * @returns {Promise<RogaTypes.RogaConfigurations>} Mengembalikan objek konfigurasi yang berhasil dimuat.
-     * @throws {RogaError} Jika ada konfigurasi yang tidak valid atau parameter wajib kosong.
+     * Loads the bot's configuration.
+     * @param {RogaTypes.RogaConfigurations} config The configuration object.
+     * @returns {Promise<RogaTypes.RogaConfigurations>}
+     * @throws {RogaError}
      */
     async loadConfig(config) {
         console.log(
@@ -623,22 +499,9 @@ class RogaClient {
     }
 
     /**
-     * ## **_start_ Function | RogaBot © 2024 - ZulfaNurhuda**
-     *
-     * Fungsi ini memulai `RogaClient` dengan menghubungkan semua layanan yang dikonfigurasi, termasuk MongoDB, Gmail, Telegram, Discord, dan webhook Discord. Jika konfigurasi belum dimuat atau koneksi ke layanan gagal, fungsi ini akan melempar error.
-     *
-     * ### Informasi Tambahan:
-     * - Pastikan `loadConfig()` telah dipanggil sebelumnya untuk menyediakan konfigurasi yang diperlukan.
-     * - Fungsi ini menghubungkan ke layanan eksternal secara asinkron dan akan mencetak log status untuk setiap layanan yang berhasil diinisialisasi.
-     * - Setiap koneksi klien akan disimpan dalam objek `data` dan dikembalikan saat proses selesai.
-     *
-     * ### Contoh Penggunaan:
-     * ```js
-     * await start(); // Memulai bot dan menghubungkan semua layanan
-     * ```
-     *
-     * @returns {Promise<RogaTypes.StartReturnedData>} Mengembalikan objek berisi semua klien yang berhasil diinisialisasi dan terhubung.
-     * @throws {RogaError} Jika konfigurasi belum dimuat atau terjadi kesalahan dalam menghubungkan layanan.
+     * Starts the bot.
+     * @returns {Promise<RogaTypes.StartReturnedData>}
+     * @throws {RogaError}
      */
     async start() {
         if (!this.config) {
