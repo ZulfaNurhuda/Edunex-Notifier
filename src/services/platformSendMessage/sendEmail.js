@@ -1,79 +1,32 @@
-/// Import Packages
-const cheerio = require(`cheerio`);
+/**
+ * @fileoverview This file contains the logic for sending emails.
+ * @version 3.0.0
+ * @author Zulfa Nurhuda
+ */
 
 /// Import Structures
-const RogaClient = require(`../../structures/RogaClient`);
 const RogaError = require(`../../structures/RogaError`);
 
-/// Import Types
-const RogaTypes = require(`../../types/types`);
-
 /**
- * ## **_sendEmail_ Service Function | RogaBot © 2024 - ZulfaNurhuda.**
- *
- * Digunakan untuk mengirim data notifikasi Edunex ke email client. Fungsi ini memproses pesan HTML
- * yang diberikan dalam `options.message`, mendeteksi tipe notifikasi (Tugas atau Kuis/Ujian), dan mengirim email
- * sesuai konfigurasi client yang disediakan.
- *
- * ### Informasi Tambahan:
- * - Parameter `options` harus berupa objek valid yang berisi `client` dan `message`.
- * - `client` harus instance dari `RogaClient`, yang menyediakan informasi konfigurasi untuk pengiriman email.
- * - `message` adalah string HTML yang akan diurai menggunakan `cheerio` untuk mengekstrak jenis notifikasi dan ID.
- * - Jika terjadi kesalahan saat parsing atau pengiriman email, fungsi ini akan melempar `RogaError`.
- *
- * ### Contoh Penggunaan:
- * ```js
- * const options = {
- *     client: RogaClient,
- *     message: `<html><h3>Tugas Baru</h3><a href=`https://edunex.example.com/123`>Link Tugas</a></html>`
- * };
- *
- * try {
- *     const result = await sendEmail(options);
- *     console.log(`Email terkirim:`, result);
- * } catch (error) {
- *     console.error(`Gagal mengirim email:`, error);
- * }
- * ```
- *
- * @param {RogaTypes.SendGmailOptions} options Opsi untuk mengirim email.
- * @returns {Promise<Object>} Data objek email yang sudah terkirim.
- * @throws {RogaError} Jika terjadi kesalahan dalam pengiriman email atau parsing pesan.
- * @author `ZulfaNurhuda.` — My Developer
+ * Sends an email.
+ * @param {object} options The options for sending the email.
+ * @param {RogaClient} options.client The RogaClient instance.
+ * @param {string} options.message The message to send.
+ * @returns {Promise<void>}
+ * @throws {RogaError} If an error occurs while sending the email.
  */
-async function sendEmail(options) {
-    if (!options || typeof options !== `object`) {
-        throw new RogaError(`Parameter options harus berupa objek yang valid.`);
+async function sendEmail({ client, message }) {
+    if (!client.gmailClient) {
+        throw new RogaError('Gmail client is not initialized.');
     }
-
-    const { client, message } = options;
-
-    if (!client || !(client instanceof RogaClient)) {
-        return new RogaError(
-            `Client tidak valid. Harus instance dari RogaClient.`
-        );
-    }
-
-    if (typeof message !== `string`) {
-        throw new RogaError(`Message yang akan dikirim harus berupa string.`);
-    }
-
-    const $ = cheerio.load(message);
-    const type = $(`h3`).text().trim().toLowerCase().includes(`tugas`)
-        ? `Tugas`
-        : `Kuis/Ujian`;
-    const id = $(`a`).attr(`href`).trim().toLowerCase().match(/(\d+)/)[1];
-
-    const mailOptions = {
-        from: client.config.gmailUsername,
-        to: client.config.defaultUsers.gmailUsername,
-        subject: `${type} Baru Edunex! (#${id})`,
-        html: message,
-    };
 
     try {
-        const emailData = await client.gmailClient.sendMail(mailOptions);
-        return emailData;
+        await client.gmailClient.sendMail({
+            from: `"RogaBot" <${client.config.gmailAppUsername}>`,
+            to: client.config.gmailDest,
+            subject: 'Edunex Notifier',
+            html: message,
+        });
     } catch (error) {
         throw new RogaError(error.message || error);
     }

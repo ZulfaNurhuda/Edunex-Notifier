@@ -1,8 +1,14 @@
+/**
+ * @fileoverview This is the main entry point of the application.
+ * @version 3.0.0
+ * @author Zulfa Nurhuda
+ */
+
 /// Import Packages
 const chalk = require(`chalk`);
 
 /// Import Configurations
-require(`dotenv`).config();
+require('dotenv').config();
 const configurations = require(`./configs/config`);
 
 /// Import Structures
@@ -16,12 +22,15 @@ const gracefulShutdown = require(`./handlers/errorHandler/gracefulShutdown`);
 const Roga = new RogaClient();
 (async () => {
     try {
+        // Load the configuration
         await Roga.loadConfig(configurations);
         console.log(
             chalk.bgGreen.whiteBright(
                 ` ✔️ | [RogaBot] Konfigurasi Berhasil Dimuat! `
             )
         );
+
+        // Start the bot
         await Roga.start();
         console.log(
             chalk.bgGreen.whiteBright(` ✔️ | [RogaBot] Berhasil Aktif! `)

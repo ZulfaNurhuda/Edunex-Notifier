@@ -1,3 +1,9 @@
+/**
+ * @fileoverview This file contains the handler for the Edunex API.
+ * @version 3.0.0
+ * @author Zulfa Nurhuda
+ */
+
 /// Import Packages
 const chalk = require(`chalk`);
 
@@ -16,28 +22,11 @@ const handlerExam = require(`./handlerExam`);
 const edunexRequest = require(`../../utils/edunexRequest`);
 
 /**
- * ## **_edunexHandler_ Function | RogaBot © 2024 - ZulfaNurhuda.**
+ * This function handles the Edunex API requests. It fetches the "todo" data from the Edunex API and then calls the appropriate handlers for assignments and exams.
  *
- * Handler ini digunakan untuk menghubungkan dan berinteraksi dengan Edunex Learning Management System (LMS) milik Institut Teknologi Bandung. Fungsi ini berfungsi untuk mendapatkan data `todo` dari Edunex API dan memproses tugas serta ujian jika tersedia. Jika terjadi kesalahan selama proses, handler akan menonaktifkan client dan memanggil fungsi penanganan error Edunex.
- *
- * ### Informasi Tambahan:
- * - Pastikan bahwa `client` dalam status aktif sebelum memanggil handler ini.
- * - Fungsi ini menangani dua jenis data utama: tugas (assignment) dan ujian (exam) dari LMS.
- * - Jika terjadi kesalahan pada API Edunex, bot akan otomatis menonaktifkan `client`.
- *
- * ### Contoh Penggunaan:
- * ```js
- * const options = {
- *     client: RogaClient,
- *     bearer: `your-edunex-api-bearer`,
- * };
- * await edunexHandler(options);
- * ```
- *
- * @param {RogaTypes.EdunexHandlerOptions} options Opsi konfigurasi untuk menjalankan Edunex Handler, termasuk instance client dan token bearer untuk autentikasi.
- * @returns {Promise<void>} Mengembalikan `Promise<void>` yang menandakan handler berhasil dijalankan dan data dari API Edunex telah diproses.
- * @throws {RogaError} Jika terjadi kesalahan dalam memproses API atau jika respons Edunex menunjukkan adanya error.
- * @author `ZulfaNurhuda.` — My Developer
+ * @param {RogaTypes.EdunexHandlerOptions} options The options for the handler.
+ * @returns {Promise<void>}
+ * @throws {RogaError} If an error occurs while handling the Edunex API requests.
  */
 async function edunexHandler(options) {
     if (!options || typeof options !== `object`) {
